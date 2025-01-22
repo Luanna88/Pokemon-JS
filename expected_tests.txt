@@ -1,0 +1,7 @@
+Deve subir o nível do pokemon corretamente
+Deve evoluir pokemon ao atingir o nível necessário
+Não deve evoluir pokemon caso não possua o level necessário
+Treinador será criado com nome correto
+Treinador será criado com a idade correta
+Treinador será criado com o pokemon inicial correto
+Treinador terá seus pokemons atualizados após nova captura
