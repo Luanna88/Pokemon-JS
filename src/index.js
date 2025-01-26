@@ -1,8 +1,19 @@
 const { getPokemonById } = require('./pokemon');
 
+function inicializarPokemon(pokemonId) {
+  const pokemon = getPokemonById(pokemonId);
+  if (!pokemon) {
+    throw new Error('Pokémon não encontrado');
+  }
+
+  const { levelInicial, evolucao } = pokemon;
+  pokemon.nivelAtual = levelInicial;
+
+  return { ...pokemon, nivelAtual: levelInicial, evolucao };
+}
+
 function criarTreinador(nome, idade, pokemonInicialId) {
-  const pokemonInicial = { ...getPokemonById(pokemonInicialId) };
-  pokemonInicial.nivelAtual = pokemonInicial.levelInicial; 
+  const pokemonInicial = inicializarPokemon(pokemonInicialId);
   return {
     nome,
     idade,
@@ -11,8 +22,7 @@ function criarTreinador(nome, idade, pokemonInicialId) {
 }
 
 function capturarPokemon(treinador, pokemonCapturadoId) {
-  const pokemonCapturado = { ...getPokemonById(pokemonCapturadoId) };
-  pokemonCapturado.nivelAtual = pokemonCapturado.levelInicial; 
+  const pokemonCapturado = inicializarPokemon(pokemonCapturadoId);
 
   treinador.pokemons = treinador.pokemons.map((pokemon) => {
     pokemon.nivelAtual++;
@@ -24,11 +34,10 @@ function capturarPokemon(treinador, pokemonCapturadoId) {
 
 function verificarEvolucao(pokemon) {
   if (pokemon.evolucao && pokemon.nivelAtual >= pokemon.evolucao.level) {
-    const pokemonEvoluido = { ...getPokemonById(pokemon.evolucao.id) };
-    pokemonEvoluido.nivelAtual = pokemon.evolucao.level; 
-    return pokemonEvoluido;
+    const pokemonEvoluido = inicializarPokemon(pokemon.evolucao.id);
+    return { ...pokemonEvoluido, nivelAtual: pokemonEvoluido.levelInicial };
   }
   return pokemon;
 }
 
-module.exports = { criarTreinador, capturarPokemon, verificarEvolucao };
+module.exports = { criarTreinador, capturarPokemon, verificarEvolucao ,inicializarPokemon};
